@@ -82,6 +82,7 @@ Python、MySQL、jQuery、Bootstrap、Flask、HTML、JavaScript、CSS等
     -js
 -templates #存放各个模板页面
 -app.py #主程序
+-mimic.py #class定义
 -config.py #存放数据库配置信息
 ```
 
