@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ patientInfo.name }}的检查信息 - 医院管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+{#    <link href="{{ url_for('static',filename='bootstrap.min.css') }}"rel="stylesheet" />#}
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-responsive.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-overrides.css') }}" type="text/css" rel="stylesheet" />
+    <!-- libraries -->
+    <link href="{{ url_for('static',filename='css/lib/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/lib/bootstrap.datepicker.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/lib/select2.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/lib/font-awesome.css') }}" type="text/css" rel="stylesheet" />
+    <!-- global styles -->
+    <link href="{{ url_for('static',filename='css/layout.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/elements.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/icons.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/compiled/user-profile.css') }}" type="text/css" media="screen" rel="stylesheet" />
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} width=55%/></a>
+            <ul class="nav pull-right">
+                <li class="settings hidden-phone">
+                    <a role="button">
+                        当前时间 {{time}}
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+                        {{ name }}
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/search/user/info">查看个人信息</a></li>
+                        <li><a href="/modify/user">修改个人信息 </a></li>
+                    </ul>
+                </li>
+                <li class="settings hidden-phone">
+                    <a href="/exit" role="button">
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- end navbar -->
+{% for message in get_flashed_messages() %}
+     <div class="alert alert-warning">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+     {{ message }}
+     </div>
+{% endfor %}
+    <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li>
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
+                <a href="/home">
+                    <i class="icon-home"></i>
+                    <span>个人主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/visualize">
+                    <i class="icon-signal"></i>
+                    <span>数据统计</span>
+                </a>
+            </li>
+            <li class="active">
+            <div class="pointer">
+                <div class="arrow"></div>
+                <div class="arrow_border"></div>
+            </div>
+            <a class="dropdown-toggle" href="#">
+                <i class="icon-group"></i>
+                <span>患者信息</span>
+                <i class="icon-chevron-down"></i>
+            </a>
+            <ul class="active submenu">
+                    <li><a href="/search/patient" class="active">患者信息概览</a></li>
+                    <li><a href="/add/patient">新增患者信息</a></li>
+            </ul>
+            </li>
+            {% if isAdmin %}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-edit"></i>
+                    <span>药品信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                <li><a href="/search/drug">药品信息查询</a></li>
+                <li><a href="/add/drug">药品信息添加</a></li>
+                </ul>
+            </li>
+            {% else %}
+            <li>
+                <a href="/search/drug">
+                    <i class="icon-edit"></i>
+                    <span>药品信息</span>
+                </a>
+            </li>
+            {% endif%}
+            {% if isAdmin %}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-th-large"></i>
+                    <span>医生信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/user">医生信息查看</a></li>
+                    <li><a href="/add/user">医生信息添加</a></li>
+                </ul>
+            </li>
+            {% endif%}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-cog"></i>
+                    <span>个人信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/user/info">个人信息查询</a></li>
+                    <li><a href="/modify/user">个人信息修改</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="/exit">
+                    <i class="icon-share-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+	<!-- main container -->
+    <div class="content">
+        <!-- settings changer -->
+        <div class="container-fluid">
+            <div id="pad-wrapper" class="user-profile">
+                <!-- header -->
+                <div class="row-fluid header">
+                    <div class="span8">
+                        <img src={{url_for('static', filename ='img/timg.jpg')}} width=70 class="avatar img-circle" />
+                        <h3 class="name">{{ patientInfo.name }} <small>的检查信息</small></h3>
+                        <span class="area">{% if patientInfo.gender=='F' %}男{% else %}女{% endif %} {{ age }}岁</span>
+                    </div>
+                    <a class="btn-flat icon pull-right delete-user" data-toggle="modal" data-target="#addAdmission">
+                        <i class="icon-plus"></i>新增检查项目
+                    </a>
+                </div>
+                <div class="row-fluid table-products section">
+                              <div class="row-fluid head">
+                        <div class="span12">
+                            <h4><strong>检查项目</strong></h4>
+                        </div>
+                    </div>
+                    <!-- bio, new note & orders column -->
+                    <div class="bio">
+                            <div class="row-fluid">
+                            <br />
+                            <!-- recent orders table -->
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="span4">
+                                            住院编号
+                                        </th>
+                                        <th class="span4">
+                                            <span class="line"></span>
+                                            检查编号
+                                        </th>
+                                        <th class="span5">
+                                            <span class="line"></span>
+                                            检查时间
+                                        </th>
+                                        <th class="span5">
+                                            <span class="line"></span>
+                                            记录时间
+                                        </th>
+                                        <th class="span4">
+                                            <span class="line"></span>
+                                            操作医生编号
+                                        </th>
+                                        <th class="span3">
+                                            <span class="line"></span>
+                                            警告信息
+                                        </th>
+                                        <th class="span3">
+                                            <span class="line"></span>
+                                            错误信息
+                                        </th>
+                                        <th class="span4">
+                                            <span class="line"></span>
+                                            是否停止
+                                        </th>
+                                        <th class="span6 align-right">
+                                            <span class="line"></span>
+                                            检查项目管理
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     {% for patient in patients %}
+                                        <tr>
+                                              <td><a>{{ patient.icustay_id }}</a></td>
+                                              <td>{{ patient.itemid }}</td>
+                                              <td>{{ patient.charttime }}</td>
+                                              <td>{{ patient.storetime }}</td>
+                                               <td>{{ patient.cgid }}</td>
+                                             <td>{% if patient.warning=='1' %}<span class="label label-important">异常</span>{% else %}<span class="label label-success">未见异常</span>{% endif %}</td>
+                                              <td>{% if patient.error=='1' %}<span class="label label-important">错误</span>{% else %}<span class="label label-success">未见错误</span>{% endif %}</td>
+                                               <td>{% if patient.stopped=='NotStopd' %}<span class="label label-success">未停止</span>{% else %}<span class="label label-important">已停止</span>{% endif %}</td>
+                                           <td>
+                                                <ul class="actions">
+                                                    <a href="/modify/patient/datatimeevent/{{ patient.subject_id }}/{{ patient.hadm_id }}/{{ patient.row_id }}"><span class="label label-info">修改检查项目</span></a>
+                                                    <a href="/delete/patient/datatimeevent/{{ patient.subject_id }}/{{ patient.hadm_id }}/{{ patient.row_id }}"><span class="label label-inverse">删除检查项目</span></a>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                                <div class="pagination pull-right">
+                                    <ul>
+                                        {% if pagination.has_prev %}<li><a href="{{ url_for('SearchPatientDatatimeevent',hadm_id=hadm_id,subject_id=subject_id) }}?page={{ pagination.prev_num }}">&#8249;<small>上一页</small></a></li>{% endif %}
+                                        {% for i in pagination.iter_pages() %}
+                                                {% if not i %}
+                                                    <li><a><small>...</small></a></li>
+                                                {% else %}
+                                                    <li><a href="{{ url_for('SearchPatientDatatimeevent',hadm_id=hadm_id,subject_id=subject_id) }}?page={{ i }}"><small>{{ i }}</small></a></li>
+                                                {% endif %}
+                                        {% endfor %}
+                                        {% if pagination.has_next %}<li><a href="{{ url_for('SearchPatientDatatimeevent',hadm_id=hadm_id,subject_id=subject_id) }}?page={{ pagination.next_num }}">&#8250;<small>下一页</small></a></li>{% endif %}
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+
+<div class="modal fade" id="addAdmission" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!--登陆框头部-->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+				<h4 class="modal-title" id="myModalLabel">
+					新增检查项目
+				</h4>
+			</div>
+			<!--登陆框中间部分(from表单)-->
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" action="{{ url_for('AddPatientDatatimeevent',hadm_id=hadm_id,subject_id=subject_id) }}" method=post>
+					<div class="form-group">
+						<label for="id" class="col-sm-2 control-label">住院编号</label>
+						<div class="col-sm-10">
+                            <input type="text" name="icustay_id" class="form-control" placeholder="请输入住院编号" required autofocus>
+						</div>
+					</div><small><br/></small>
+                    <div class="form-group">
+						<label for="id" class="col-sm-2 control-label">检查项目编号</label>
+						<div class="col-sm-10">
+                            <input type="text" name="itemid" class="form-control" placeholder="请输入检查项目编号" required>
+						</div>
+					</div><small><br/></small>
+					<div class="form-group">
+						<label for="name" class="col-sm-2 control-label">检查时间</label>
+						<div class="col-sm-10">
+                            <div class="input-append date form_datetime" data-date="" value="" data-date-format="yyyy-mm-dd hh:ii:ss">
+                                <input name="charttime" size="12" type="text" value="{{ time }}">
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                            <input type="hidden" id="dtp_input1" value="" /><br/>
+						</div>
+					</div><small><br/></small>
+                    <div class="form-group">
+						<label for="name" class="col-sm-2 control-label">记录时间</label>
+						<div class="col-sm-10">
+                            <div class="input-append date form_datetime" data-date="" value="" data-date-format="yyyy-mm-dd hh:ii:ss">
+                                <input name="storetime" size="12" type="text" value="{{ time }}">
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                            <input type="hidden" id="dtp_input1" value="" /><br/>
+						</div>
+					</div><small><br/></small>
+					<div class="form-group">
+						<label for="name" class="col-sm-2 control-label">警告信息</label>
+						<div class="col-sm-10">
+                            <div class="col-sm-10 ui-select" name="warning">
+                                <select class="form-control" name="warning">
+                                    <option value="NULL" >未见异常
+                                    <option value="1" >异常
+                                </select>
+                            </div>
+						</div>
+					</div><small><br/></small>
+					<div class="form-group">
+						<label for="name" class="col-sm-2 control-label">错误信息</label>
+						<div class="col-sm-10">
+                            <div class="col-sm-10 ui-select" name="error">
+                                <select class="form-control" name="error">
+                                    <option value="NULL" >未见错误
+                                    <option value="1" >错误
+                                </select>
+                            </div>
+						</div>
+					</div><small><br/></small>
+					<div class="form-group">
+						<label for="birthday" class="col-sm-2 control-label">是否停止</label>
+						<div class="col-sm-10">
+                            <div class="col-sm-10 ui-select" name="stopped">
+                                <select class="form-control" name="stopped">
+                                    <option value="NotStopd" >未停止
+                                    <option value="D/C'd" >已停止
+                                </select>
+                            </div>
+						</div>
+					</div><small><br/></small>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="submit" class="btn btn-default inside" >确定</button>
+						</div>
+					</div>
+				</form>
+		    </div>
+	    </div>
+    </div>
+</div>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src={{url_for('static', filename ='js/bootstrap.min.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-paginator.js')}}></script>
+    <script src={{url_for('static', filename ='js/theme.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap.datepicker.js')}}></script>
+    <script src={{url_for('static', filename ='js/select2.min.js')}}></script>
+        <script src={{url_for('static', filename ='js/bootstrap-datetimepicker.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-datetimepicker.zh-CN.js')}}></script>
+    <script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+    <script type="text/javascript">
+        $(function () {
+            // datepicker plugin
+            $('.datepicker').datepicker({dateFormat: "yy-mm-dd"}).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+    </script>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

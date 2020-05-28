@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>药品信息修改 - 医院管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-responsive.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-overrides.css') }}" type="text/css" rel="stylesheet" />
+    <!-- global styles -->
+    <link href="{{ url_for('static',filename='css/layout.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/elements.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/icons.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/lib/font-awesome.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/compiled/personal-info.css') }}" type="text/css" rel="stylesheet" />
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} width=55%/></a>
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <ul class="nav pull-right">
+                <li class="settings hidden-phone">
+                    <a role="button">
+                        当前时间 {{time}}
+                    </a>
+                </li>
+               <li class="settings hidden-phone">
+                    <a role="button" href="/exit">
+                        退出系统
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-collapse collapse pull-right">
+                <ul class="nav">
+                    <li ><a href="/home">个人中心</a></li>
+                    <li><a href="/visualize">数据统计</a></li>
+                    <li><a href="/search/patient">患者信息</a></li>
+                    <li class="active"><a href="/search/drug">药品信息</a></li>
+                    {% if isAdmin %}
+                    <li><a href="/search/user">医生信息</a></li>
+                    {% endif %}
+                    <li><a href="/search/user/info">个人信息</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end navbar -->
+        {% for message in get_flashed_messages() %}
+ <div class="alert alert-warning">
+{# <button type="button" class="close" data-dismiss="alert">×</button>#}
+ {{ message }}
+ </div>
+ {% endfor %}
+	<!-- main container .wide-content is used for this layout without sidebar :)  -->
+    <div class="content wide-content">
+        <div class="container-fluid">
+            <div class="settings-wrapper" id="pad-wrapper">
+                <!-- avatar column -->
+                <div class="span3 avatar-box">
+                    <div class="personal-image">
+                        <img src={{url_for('static', filename ='img/drug_info.jpg')}} class="avatar img-circle" />
+{#                        <p>Upload a different photo...</p>#}
+{#                        <input type="file" />#}
+                    </div>
+                </div>
+                <!-- edit form column -->
+                <div class="span7 personal-info">
+                    <div class="alert alert-info">
+                        <i class="icon-lightbulb"></i>
+                        本页面仅用于管理员账户修改药品信息，管理员用户可在此页面修改药品的名称、类型和库存等。
+                    </div>
+                    <h5 class="personal-title">药品信息修改</h5>
+                    <form action="" method=post>
+                        <div class="field-box">
+                            <label>药品名:</label>
+                            <input class="span5 inline-input" type="text" name="drug" value="{{ drugToCheckInfo.drug}}" />
+                        </div>
+                        <div class="field-box">
+                            <label>医嘱系统药名：</label>
+                            <input class="span5 inline-input" type="text" name="drug_name_poe"  value="{{ drugToCheckInfo.drug_name_poe }}" />
+                        </div>
+                        <div class="span5 field-box"><font color="red">
+                                                    <label>药品类型:<br/><small>重要信息谨慎修改</small></label>
+                            <div class="col-sm-10 ui-select span5" name="drug_type">
+                                <select class="form-control" name="drug_type" >
+                                    <option value="BASE" >基本类型药物
+                                    <option value="MAIN" >主要类型药物
+                                    <option value="ADDICTIVE" >添加剂型药物
+                                </select>
+                            </div></font>
+                        </div>
+                        <div class="span5 field-box"><font color="red">
+                            <label>库存量:<br/><small>重要信息谨慎修改</small></label>
+                            <div class="col-sm-10 ui-select span5" name="inventory">
+                                <input class="span5 inline-input" type="text" name="inventory" value={{ drugToCheckInfo.inventory }} />
+                            </div></font>
+                        </div>
+                        <div class="span6 field-box actions">
+                            <input type="submit" class="btn-glow primary" value="保存修改" />
+                            <span>或</span>
+                            <input type="reset" value="取消修改" class="reset" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+
+
+	<!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/theme.js"></script>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- ========== Meta Tags ========== -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="#" />
+  <!-- ========== Page Title ========== -->
+  <title>医院管理系统</title>
+  <!-- ========== Start Stylesheet ========== -->
+  <link href="{{ url_for('static',filename='bootstrap.min.css') }}"rel="stylesheet" />
+  <link href="{{ url_for('static',filename='font-awesome.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='flaticon-set.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='magnific-popup.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='owl.carousel.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='owl.theme.default.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='animate.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='bootsnav.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='style.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static',filename='responsive.css') }}"rel="stylesheet" />
+ <link href="{{ url_for('static',filename='css/lib/bootstrap.datepicker.css') }}" type="text/css" rel="stylesheet" />
+
+  <!-- ========== End Stylesheet ========== -->
+ <script src={{url_for('static', filename ='js/jquery-1.12.4.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/index.js')}}></script>
+  <script src={{url_for('static', filename ='js/equal-height.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/jquery.appear.js')}}></script>
+  <script src={{url_for('static', filename ='js/jquery.easing.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/jquery.magnific-popup.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/modernizr.custom.13711.js')}}></script>
+  <script src={{url_for('static', filename ='js/owl.carousel.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/wow.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/isotope.pkgd.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/imagesloaded.pkgd.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/count-to.js')}}></script>
+  <script src={{url_for('static', filename ='js/jquery.nice-select.min.js')}}></script>
+  <script src={{url_for('static', filename ='js/bootsnav.js')}}></script>
+  <script src={{url_for('static', filename ='js/main.js')}}></script>
+ <script src={{url_for('static', filename ='js/carousel.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-datetimepicker.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-datetimepicker.zh-CN.js')}}></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]><script src={{url_for('static', filename ='js/html5/html5shiv.min.js')}}></script>
+<script src={{url_for('static',filename ='js/html5/respond.min.js')}}></script><![endif]-->
+  <!-- ========== Google Fonts ========== -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,500,600,700,800" rel="stylesheet" />
+ </head>
+ <body>
+    {% for message in get_flashed_messages() %}
+ <div class="alert alert-warning">
+ <button type="button" class="close" data-dismiss="alert">×</button>
+ {{ message }}
+ </div>
+ {% endfor %}
+  <!-- Preloader Start -->
+  <div class="se-pre-con"></div>
+  <!-- Preloader Ends -->
+  <!-- Header     ============================================= -->
+  <header id="home">
+   <!-- Start Navigation -->
+   <nav class="navbar navbar-default attr-border navbar-sticky bootsnav">
+    <div class="container">
+     <!-- Start Header Navigation -->
+     <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"><i class="fa fa-bars"></i></button>
+      <a class="navbar-brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} class="logo" alt="Logo" /></a>
+     </div>
+     <!-- End Header Navigation -->
+     <!-- Collect the nav links, forms, and other content for toggling -->
+     <div class="collapse navbar-collapse" id="navbar-menu">
+      <ul class="nav navbar-nav navbar-right" data-in="#" data-out="#">
+         {% if username %}
+          <li><a href="/home">个人中心</a></li>
+         <li><a href="/exit">退出</a></li>
+          {% else %}
+{#          <li><a href="/register">注册</a></li>#}
+             <li><a data-toggle="modal" data-target="#register">注册</a></li>
+         <li><a data-toggle="modal" data-target="#login">登录</a></li>
+
+          {% endif %}
+      </ul>
+     </div>
+     <!-- /.navbar-collapse -->
+    </div>
+   </nav>
+   <!-- End Navigation -->
+  </header>
+  <!-- End Header -->
+  <!-- Start Banner     ============================================= -->
+  <div class="banner-area heading-exchange text-dark">
+   <div id="bootcarousel" class="carousel inc-top-heading slide carousel-fade animate_text" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner carousel-zoom">
+     <div class="item active">
+      <div class="slider-thumb bg-cover" style="background-image: url(/static/img/banner/1.jpg);"></div>
+      <div class="box-table">
+       <div class="box-cell">
+        <div class="container">
+         <div class="row">
+          <div class="col-md-8">
+           <div class="content">
+            <h1 data-animation="animated fadeInUp">便捷 <span>易用</span></h1>
+            <h2 data-animation="animated fadeInDown">面向医生端的在线医院信息管理系统</h2>
+            <p data-animation="animated slideInUp">面向医院心脑血管疾病治疗设计的数据库</p>
+               {% if username %}
+                   <a data-animation="animated slideInUp" class="btn btn-theme effect btn-md" href="/home">个人中心</a>
+               {% else %}
+                    <a data-animation="animated slideInUp" class="btn btn-theme effect btn-md" data-toggle="modal" data-target="#login">现在登录</a>
+               {% endif %}
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="item">
+      <div class="slider-thumb bg-cover" style="background-image: url(/static/img/banner/2.jpg);"></div>
+      <div class="box-table">
+       <div class="box-cell">
+        <div class="container">
+         <div class="row">
+          <div class="col-md-8">
+           <div class="content">
+            <h1 data-animation="animated fadeInUp"><span>方便 </span>高效</h1>
+            <h2 data-animation="animated fadeInDown">医生和管理人员可以高效的实现患者信息的查看与管理</h2>
+            <p data-animation="animated slideInUp">不论是患者信息的增加、删除、修改还是筛选，都是得心应手</p>
+               {% if username %}
+                   <a data-animation="animated slideInUp" class="btn btn-theme effect btn-md" href="/home">个人中心</a>
+               {% else %}
+                    <a data-animation="animated slideInUp" class="btn btn-theme effect btn-md" data-toggle="modal" data-target="#login">现在登录</a>
+               {% endif %}
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="item">
+      <div class="slider-thumb bg-cover" style="background-image: url(/static/img/banner/3.jpg);"></div>
+      <div class="box-table">
+       <div class="box-cell">
+        <div class="container">
+         <div class="row">
+          <div class="col-md-8">
+           <div class="content">
+            <h1 data-animation="animated fadeInUp">生动 <span>直观</span></h1>
+            <h2 data-animation="animated fadeInDown">实现对患者信息的可视化管理</h2>
+            <p data-animation="animated slideInUp">支持根据患者年龄、性别、诊断信息等进行筛选与可视化，更直观的了解每一位患者的健康情况</p>
+               {% if username %}
+                   <a data-animation="animated slideInUp" class="btn btn-theme effect btn-md" href="/home">个人中心</a>
+               {% else %}
+                    <a data-animation="animated slideInUp" class="btn btn-theme effect btn-md" data-toggle="modal" data-target="#login">现在登录</a>
+               {% endif %}
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- End Wrapper for slides -->
+    <!-- Left and right controls -->
+   <a class="carousel-control left" href="#bootcarousel"
+       data-slide="prev"> &lsaquo;</a>
+    <a class="carousel-control right" href="#bootcarousel"
+       data-slide="next">&rsaquo;</a>
+   </div>
+  </div>
+
+<div class="modal fade" id="login" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!--登陆框头部-->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+				<h4 class="modal-title" id="myModalLabel">
+					医生登录
+				</h4>
+			</div>
+			<!--登陆框中间部分(from表单)-->
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" action="{{ url_for('Login') }}" method=post>
+					<!--用户框-->
+					<div class="form-group">
+						<label for="username" class="col-sm-2 control-label">用户名</label>
+						<div class="col-sm-10">
+                            <input type="text" name="username" class="form-control" placeholder="请输入用户名" required autofocus>
+						</div>
+					</div>
+					<!--密码框-->
+					<div class="form-group">
+						<label for="password" class="col-sm-2 control-label" >密码</label>
+						<div class="col-sm-10">
+                            <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">登录</button>
+						</div>
+					</div>
+				</form>
+		    </div>
+	    </div>
+    </div>
+</div>
+
+<div class="modal fade" id="register" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!--登陆框头部-->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+				<h4 class="modal-title" id="myModalLabel">
+					医生注册
+				</h4>
+			</div>
+			<!--登陆框中间部分(from表单)-->
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" action="{{ url_for('Register') }}" method=post>
+					<!--用户框-->
+					<div class="form-group">
+						<label for="id" class="col-sm-2 control-label">医生编号</label>
+						<div class="col-sm-10">
+                            <input type="text" name="id" class="form-control" placeholder="请输入医生编号" required autofocus>
+						</div>
+					</div>
+                    <!--用户框-->
+					<div class="form-group">
+						<label for="name" class="col-sm-2 control-label">医生姓名</label>
+						<div class="col-sm-10">
+                            <input type="text" name="name" class="form-control" placeholder="请输入医生姓名" required>
+						</div>
+					</div>
+                    <!--用户框-->
+					<div class="form-group">
+						<label for="username" class="col-sm-2 control-label">用户名</label>
+						<div class="col-sm-10">
+                            <input type="text" name="username" class="form-control" placeholder="请输入用户名" required>
+						</div>
+					</div>
+					<!--密码框-->
+					<div class="form-group">
+						<label for="password" class="col-sm-2 control-label" >密码</label>
+						<div class="col-sm-10">
+                            <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
+						</div>
+					</div>
+                    <!--密码框-->
+					<div class="form-group">
+						<label for="passwordConfirm" class="col-sm-2 control-label" >确认密码</label>
+						<div class="col-sm-10">
+                            <input type="password" name="passwordConfirm" class="form-control" placeholder="请确认密码" required>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="birthday" class="col-sm-2 control-label">医生生日</label>
+						<div class="col-sm-10">
+{#                            <input type="text" name="birthday" class="form-control" placeholder="请输入生日" required>#}
+                            <input type="text" name="birthday" class="form-control input-large datepicker" data-date-format="yyyy-mm-dd"/>
+						</div>
+					</div>
+                    <!--用户框-->
+					<div class="form-group">
+						<label for="jobTitle" class="col-sm-2 control-label">医生职称</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="jobTitle">
+                                <option>主任医师</option>
+                                <option>副主任医师</option>
+                                <option>主治医师</option>
+                                <option>住院医师</option>
+                            </select>
+	                    </div>
+					</div>
+                    <!--用户框-->
+					<div class="form-group">
+						<label for="sex" class="col-sm-2 control-label">医生性别</label>
+						<div class="col-sm-10">
+                            <select class="form-control" name="sex">
+                                <option>男</option>
+                                <option>女</option>
+                            </select>
+						</div>
+					</div>
+                    <!--用户框-->
+
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">注册</button>
+						</div>
+					</div>
+				</form>
+		    </div>
+	    </div>
+    </div>
+</div>
+ <script src={{url_for('static', filename ='js/bootstrap.datepicker.js')}}></script>
+ <script type="text/javascript">
+        $(function () {
+            // select2 plugin for select elements
+            // datepicker plugin
+            $('.datepicker').datepicker({dateFormat: "yy-mm-dd"}).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+    </script>
+ </body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>医生查看 - 医院管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-responsive.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-overrides.css') }}" type="text/css" rel="stylesheet" />
+    <!-- global styles -->
+    <link href="{{ url_for('static',filename='css/layout.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/elements.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/icons.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/layui.css') }}" type="text/css" rel="stylesheet" />
+    <!-- libraries -->
+    <link href="{{ url_for('static',filename='css/lib/font-awesome.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/compiled/user-list.css') }}" type="text/css" media="screen" />
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} width=55%/></a>
+            <ul class="nav pull-right">
+                <li class="settings hidden-phone">
+                    <a role="button">
+                        当前时间 {{time}}
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+                        {{ name }}
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/search/user/info">查看个人信息</a></li>
+                        <li><a href="/modify/user">修改个人信息 </a></li>
+                    </ul>
+                </li>
+                <li class="settings hidden-phone">
+                    <a href="/exit" role="button">
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- end navbar -->
+        {% for message in get_flashed_messages() %}
+ <div class="alert alert-warning">
+ <button type="button" class="close" data-dismiss="alert">×</button>
+ {{ message }}
+ </div>
+ {% endfor %}
+    <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li>
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
+                <a href="/home">
+                    <i class="icon-home"></i>
+                    <span>个人主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/visualize">
+                    <i class="icon-signal"></i>
+                    <span>数据统计</span>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-group"></i>
+                    <span>患者信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/patient">患者信息概览</a></li>
+                    <li><a href="/add/patient">新增患者信息</a></li>
+                </ul>
+            </li>
+            {% if isAdmin %}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-edit"></i>
+                    <span>药品信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/drug">药品信息查询</a></li>
+                    <li><a href="/add/drug">药品信息添加</a></li>
+                </ul>
+            </li>
+            {% else %}
+            <li>
+                <a href="/search/drug">
+                    <i class="icon-edit"></i>
+                    <span>药品信息</span>
+                </a>
+            </li>
+            {% endif%}
+
+            {% if isAdmin %}
+            <li class="active">
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-th-large"></i>
+                    <span>医生信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="active submenu">
+                    <li><a href="/search/user" class="active">医生信息查看</a></li>
+                    <li><a href="/add/user">医生信息添加</a></li>
+                </ul>
+            </li>
+            {% endif%}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-cog"></i>
+                    <span>个人信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/user/info">个人信息查询</a></li>
+                    <li><a href="/modify/user">个人信息修改</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="/exit">
+                    <i class="icon-share-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+	<!-- main container -->
+    <div class="content">
+        <!-- settings changer -->
+        <div class="container-fluid">
+            <div id="pad-wrapper" class="users-list">
+                <div class="row-fluid header">
+                    <h3>医生信息查看</h3>
+                    <div class="span10 pull-right">
+                        <form action="" method=post>
+                        <input type="text" class="span5 search" name="name" placeholder="请输入待查找医生姓名" />
+                    </form>
+                        <a href="/add/user" class="btn-flat success pull-right">
+                            <span>&#43;</span>
+                            添加医生账户
+                        </a>
+                    </div>
+                </div>
+                <!-- Users table -->
+                <div class="row-fluid table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="span2 sortable">
+                                    医生编号
+                                </th>
+                                <th class="span3 sortable">
+                                    <span class="line"></span>医生姓名
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>用户名
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>管理权限
+                                </th>
+                                <th class="span3 sortable">
+                                    <span class="line"></span>职称
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>性别
+                                </th>
+                                <th class="span3 sortable">
+                                    <span class="line"></span>生日
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>电话
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>微信
+                                </th>
+                                <th class="span3 sortable">
+                                    <span class="line"></span>邮箱
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>QQ
+                                </th>
+                                <th class="span4 sortable align-right">
+                                    <span class="line"></span>账户管理操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="demoBody">
+                        <!-- row -->
+                        {% for user in users %}
+                        <tr >
+                            <td>
+                                <a class="name">{{ user.id }}</a>
+                            </td>
+                            <td>
+                                {{ user.name }}
+                            </td>
+                            <td>
+                                {{ user.username }}
+                            </td>
+                            <td>
+                                {% if user.isAdmin %}管理员{% else %}非管理员{% endif %}
+                            </td>
+                            <td>
+                                {{ user.jobTitle }}
+                            </td>
+                            <td>
+                                {{ user.sex }}
+                            </td>
+                            <td>
+                                {{ user.birthday }}
+                            </td>
+                            <td>
+                                {{ user.telephoneNum }}
+                            </td>
+                            <td>
+                                {{ user.wechat }}
+                            </td>
+                            <td>
+                                {{ user.mail }}
+                            </td>
+                            <td>
+                                {{ user.qq }}
+                            </td>
+                            <td class="align-right">
+                                <ul class="actions">
+                                    <a href="/modify/user/{{ user.row_id }}"><span class="label label-success">修改</span></a>
+                                    <a href="/reset/user/{{ user.row_id }}"><span class="label label-inverse">重置</span></a>
+                                    <a href="/delete/user/{{ user.row_id }}"><span class="label label-important">删除</span>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                <div id="demo"></div>
+                </div>
+                <div class="pagination pull-right">
+                    <ul>
+                        {% if pagination.has_prev %}<li><a href="{{ url_for('SearchUser') }}?page={{ pagination.prev_num }}">&#8249;<small>上一页</small></a></li>{% endif %}
+                        {% if pagination.has_next %}<li><a href="{{ url_for('SearchUser') }}?page={{ pagination.next_num }}">&#8250;<small>下一页</small></a></li>{% endif %}
+                    </ul>
+                </div>
+                <!-- end users table -->
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+	<!-- scripts -->
+{#    <link href={{url_for('static', filename ='js/bootstrap.min.js')}} rel="stylesheet">#}
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src={{url_for('static', filename ='js/bootstrap.min.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-paginator.js')}}></script>
+    <script src={{url_for('static', filename ='js/theme.js')}}></script>
+    <script src={{url_for('static', filename ='js/layui.js')}}></script>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

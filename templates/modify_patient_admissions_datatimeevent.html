@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>检查项目修改 - 医院管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-responsive.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-overrides.css') }}" type="text/css" rel="stylesheet" />
+    <!-- global styles -->
+    <link href="{{ url_for('static',filename='css/lib/bootstrap-datetimepicker.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/lib/bootstrap.datepicker.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/lib/select2.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/layout.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/elements.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/icons.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/lib/font-awesome.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/compiled/personal-info.css') }}" type="text/css" rel="stylesheet" />
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} width=55%/></a>
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <ul class="nav pull-right">
+                <li class="settings hidden-phone">
+                    <a role="button">
+                        当前时间 {{time}}
+                    </a>
+                </li>
+               <li class="settings hidden-phone">
+                    <a role="button" href="/exit">
+                        退出系统
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-collapse collapse pull-right">
+                <ul class="nav">
+                    <li ><a href="/home">个人中心</a></li>
+                    <li><a href="/visualize">数据统计</a></li>
+                    <li class="active"><a href="/search/patient">患者信息</a></li>
+                    <li><a href="/search/drug">药品信息</a></li>
+                    {% if isAdmin %}
+                    <li><a href="/search/user">医生信息</a></li>
+                    {% endif %}
+                    <li><a href="/search/user/info">个人信息</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end navbar -->
+{% for message in get_flashed_messages() %}
+     <div class="alert alert-warning">
+        {{ message }}
+     </div>
+ {% endfor %}
+	<!-- main container .wide-content is used for this layout without sidebar :)  -->
+    <div class="content wide-content">
+        <div class="container-fluid">
+            <div class="settings-wrapper" id="pad-wrapper">
+                <!-- avatar column -->
+                <div class="span3 avatar-box">
+                    <div class="personal-image">
+                        <img src={{url_for('static', filename ='img/drug_info.jpg')}} class="avatar img-circle" />
+                    </div>
+                </div>
+                <!-- edit form column -->
+                <div class="span7 personal-info">
+                    <div class="alert alert-info">
+                        <i class="icon-lightbulb"></i>
+                        本页面供医生及管理员账户修改患者病历中的检查项目信息，请直接修改所需修改的项目即可。
+                    </div>
+                    <h5 class="personal-title">检查项目修改</h5>
+                    <form action="" method=post>
+                        <div class="field-box">
+                            <label>住院编号:</label>
+                            <input class="span5 inline-input" type="text" name="icustay_id" value="{{ labeventsToCheckInfo.icustay_id}}" />
+                        </div>
+                        <div class="field-box">
+                            <label>检查项目编号:</label>
+                            <input class="span5 inline-input" type="text" name="itemid" value="{{ labeventsToCheckInfo.itemid}}" />
+                        </div>
+                        <div class="field-box">
+                            <label class="col-sm-2 control-label">报告时间:</label>
+                            <div class="inline-input input-append date form_datetime" data-date="{{ labeventsToCheckInfo.charttime}}" value="" data-date-format="yyyy-mm-dd hh:ii:ss">
+                                <input name="charttime" size="12" type="text" value="{{ labeventsToCheckInfo.charttime}}">
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+                                <input type="hidden" id="dtp_input1" value="" /><br/>
+                        </div>
+                        <div class="field-box">
+                            <label class="col-sm-2 control-label">记录时间:</label>
+                            <div class="inline-input input-append date form_datetime" data-date="{{ labeventsToCheckInfo.storetime}}" value="" data-date-format="yyyy-mm-dd hh:ii:ss">
+                                <input name="storetime" size="12" type="text" value="{{ labeventsToCheckInfo.storetime}}">
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+                                <input type="hidden" id="dtp_input1" value="" /><br/>
+                        </div>
+                        <div class="span5 field-box"><font color="red">
+                                                    <label>警告信息:<br/><small>重要信息谨慎修改</small></label>
+                            <div class="col-sm-10 ui-select span5" name="warning">
+                                <select class="form-control" name="warning" >
+                                    <option value="NULL" {% if labeventsToCheckInfo.warning!='1' %}selected {% endif %}>未见异常
+                                    <option value="1" {% if labeventsToCheckInfo.warning=='1' %}selected {% endif %}>异常
+                                </select>
+                            </div></font>
+                        </div>
+                        <div class="span5 field-box"><font color="red">
+                                                    <label>错误信息:<br/><small>重要信息谨慎修改</small></label>
+                            <div class="col-sm-10 ui-select span5" name="error">
+                                <select class="form-control" name="error" >
+                                    <option value="NULL" {% if labeventsToCheckInfo.error!='1' %}selected {% endif %}>未见错误
+                                    <option value="1" {% if labeventsToCheckInfo.error=='1' %}selected {% endif %}>错误
+                                </select>
+                            </div></font>
+                        </div>
+                        <div class="span5 field-box"><font color="red">
+                                                    <label>是否停止:<br/><small>重要信息谨慎修改</small></label>
+                            <div class="col-sm-10 ui-select span5" name="stopped">
+                                <select class="form-control" name="stopped" >
+                                    <option value="NotStopd" {% if labeventsToCheckInfo.stopped=='NotStopd' %}selected {% endif %} >未停止
+                                    <option value="D/C'd" {% if labeventsToCheckInfo.stopped!='NotStopd' %}selected {% endif %}>已停止
+                                </select>
+                            </div></font>
+                        </div>
+                        <div class="span6 field-box actions">
+                            <input type="submit" class="btn-glow primary" value="保存修改" />
+                            <span>或</span>
+                            <input type="reset" value="取消修改" class="reset" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+	<!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/theme.js"></script>
+    <script src={{url_for('static', filename ='js/bootstrap.datepicker.js')}}></script>
+    <script src={{url_for('static', filename ='js/select2.min.js')}}></script>
+           <script src={{url_for('static', filename ='js/bootstrap-datetimepicker.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-datetimepicker.zh-CN.js')}}></script>
+    <script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+    <script type="text/javascript">
+        $(function () {
+            // select2 plugin for select elements
+            $(".select2").select2({
+                placeholder: "Select a State"
+            });
+            // datepicker plugin
+            $('.datepicker').datepicker({dateFormat: "yy-mm-dd"}).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+    </script>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

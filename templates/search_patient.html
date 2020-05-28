@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>患者信息概览 - 医院管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-responsive.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-overrides.css') }}" type="text/css" rel="stylesheet" />
+    <!-- global styles -->
+    <link href="{{ url_for('static',filename='css/layout.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/elements.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/icons.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/layui.css') }}" type="text/css" rel="stylesheet" />
+    <!-- libraries -->
+    <link href="{{ url_for('static',filename='css/lib/font-awesome.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/compiled/user-list.css') }}" type="text/css" media="screen" />
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} width=55%/></a>
+            <ul class="nav pull-right">
+                <li class="settings hidden-phone">
+                    <a role="button">
+                        当前时间 {{time}}
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+                        {{ Lname }}
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/search/user/info">查看个人信息</a></li>
+                        <li><a href="/modify/user">修改个人信息 </a></li>
+                    </ul>
+                </li>
+                <li class="settings hidden-phone">
+                    <a href="/exit" role="button">
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- end navbar -->
+        {% for message in get_flashed_messages() %}
+ <div class="alert alert-warning">
+ <button type="button" class="close" data-dismiss="alert">×</button>
+ {{ message }}
+ </div>
+ {% endfor %}
+    <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li>
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
+                <a href="/home">
+                    <i class="icon-home"></i>
+                    <span>个人主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/visualize">
+                    <i class="icon-signal"></i>
+                    <span>数据统计</span>
+                </a>
+            </li>
+            <li class="active">
+            <div class="pointer">
+                <div class="arrow"></div>
+                <div class="arrow_border"></div>
+            </div>
+            <a class="dropdown-toggle" href="#">
+                <i class="icon-group"></i>
+                <span>患者信息</span>
+                <i class="icon-chevron-down"></i>
+            </a>
+            <ul class="active submenu">
+                    <li><a href="/search/patient" class="active">患者信息概览</a></li>
+                    <li><a href="/add/patient">新增患者信息</a></li>
+            </ul>
+            </li>
+            {% if isAdmin %}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-edit"></i>
+                    <span>药品信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                <li><a href="/search/drug">药品信息查询</a></li>
+                <li><a href="/add/drug">药品信息添加</a></li>
+                </ul>
+            </li>
+            {% else %}
+            <li>
+                <a href="/search/drug">
+                    <i class="icon-edit"></i>
+                    <span>药品信息</span>
+                </a>
+            </li>
+            {% endif%}
+            {% if isAdmin %}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-th-large"></i>
+                    <span>医生信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/user">医生信息查看</a></li>
+                    <li><a href="/add/user">医生信息添加</a></li>
+                </ul>
+            </li>
+            {% endif%}
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-cog"></i>
+                    <span>个人信息</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/search/user/info">个人信息查询</a></li>
+                    <li><a href="/modify/user">个人信息修改</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="/exit">
+                    <i class="icon-share-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+	<!-- main container -->
+    <div class="content">
+        <!-- settings changer -->
+        <div class="container-fluid">
+            <div id="pad-wrapper" class="users-list">
+                <div class="row-fluid header">
+                    <h3>患者信息概览</h3>
+                    <div class="span10 pull-right">
+                        <form action="" method=post>
+                        <input type="text" class="span2 search" name="name" placeholder="请输入待查询患者姓名" />&emsp;
+                            <div class=" ui-select search span2">
+                                        <select class="form-control" name="gender">
+                                            <option value='' disabled selected style='display:none;'>请输入待查询患者性别</option>
+                                            <option value="F">男</option>
+                                            <option value="M">女</option>
+                                        </select>
+                                    </div>
+                            <input type="text" class="span2 search" name="age" placeholder="请输入待查询患者年龄" />&emsp;
+                            <input type="text" class="span2 search" name="diagnosis" placeholder="请输入待查询患者诊断信息" />
+                <tr>
+                    <td></td>
+                    <td><input class="btn-glow invisible"type="submit" value="搜索"></td>
+                </tr>
+                        <a href="/add/patient" class="btn-flat success">
+                            <span>&#43;</span>
+                            添加患者信息
+                        </a>
+                            <a href="{{ url_for('Visualize')}}?name={% if request.args.get('name')!=''  and request.args.get('name')!=None %}{{ request.args.get('name') }}{% endif %}&gender={% if request.args.get('gender')!='' and request.args.get('gender')!=None %}{{ request.args.get('gender') }}{% endif %}&age={% if request.args.get('age')!='' and request.args.get('age')!=None %}{{ request.args.get('age') }}{% endif %}&diagnosis={% if request.args.get('diagnosis')!='' and request.args.get('diagnosis')!=None %}{{ request.args.get('diagnosis') }}{% endif %}" class="btn-flat default pull-right">
+                            <span class="icon-signal"></span>
+                            查看患者数据统计
+                        </a>
+                        </form>
+
+                    </div>
+                </div>
+                <!-- Users table -->
+                <div class="row-fluid table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="span2 sortable">
+                                    患者编号
+                                </th>
+                                <th class="span3 sortable">
+                                    <span class="line"></span>姓名
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>性别
+                                </th>
+                                <th class="span4 sortable">
+                                    <span class="line"></span>出生日期
+                                </th>
+                                <th class="span4 sortable">
+                                    <span class="line"></span>死亡日期
+                                </th>
+                                <th class="span3 sortable">
+                                    <span class="line"></span>是否健在
+                                </th>
+                                <th class="span4 sortable align-right">
+                                    <span class="line"></span>患者信息详情及管理
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="demoBody">
+                        <!-- row -->
+                        {% for patient in patients %}
+                        <tr >
+                            <td>
+                                <a class="name">{{ patient.subject_id }}</a>
+                            </td>
+                            <td>
+                                {{ patient.name }}
+                            </td>
+                                                    <td>
+                                {% if patient.gender == 'F'%}
+                                    男
+                                {% else %}
+                                    女
+                                {% endif %}
+                            </td>
+                                                    <td>
+                                {{ patient.dob }}
+                            </td>
+                                                    <td>
+                                {{ patient.dod }}
+                            </td>
+                            <td>
+                                {% if patient.expire_flag == '1'%}
+                                    <span class="label label-danger">逝世</span>
+                                {% else %}
+                                    <span class="label label-success">健在</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-right">
+                                <ul class="actions">
+                                    <a href="/search/patient/admissions/{{ patient.subject_id }}"><span class="label label-warning">患者详情</span></a>
+                                    <a href="/delete/patient/{{ patient.subject_id }}"><span class="label label-inverse">删除患者</span></a>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                <div id="demo"></div>
+                </div>
+                <div class="pagination pull-right">
+                    <ul>
+                        {% if pagination.has_prev %}<li><a href="{{ url_for('SearchPatient')}}?name={% if request.args.get('name')!=''  and request.args.get('name')!=None %}{{ request.args.get('name') }}{% endif %}&gender={% if request.args.get('gender')!='' and request.args.get('gender')!=None %}{{ request.args.get('gender') }}{% endif %}&age={% if request.args.get('age')!='' and request.args.get('age')!=None %}{{ request.args.get('age') }}{% endif %}&diagnosis={% if request.args.get('diagnosis')!='' and request.args.get('diagnosis')!=None %}{{ request.args.get('diagnosis') }}{% endif %}&page={{ pagination.prev_num }}">&#8249;<small>上一页</small></a></li>{% endif %}
+                        {% for i in pagination.iter_pages() %}
+                                {% if not i %}
+                                    <li><a ><small>...</small></a></li>
+                                {% else %}
+                                    <li><a href="{{ url_for('SearchPatient') }}?name={% if request.args.get('name')!=''  and request.args.get('name')!=None %}{{ request.args.get('name') }}{% endif %}&gender={% if request.args.get('gender')!='' and request.args.get('gender')!=None %}{{ request.args.get('gender') }}{% endif %}&age={% if request.args.get('age')!='' and request.args.get('age')!=None %}{{ request.args.get('age') }}{% endif %}&diagnosis={% if request.args.get('diagnosis')!='' and request.args.get('diagnosis')!=None %}{{ request.args.get('diagnosis') }}{% endif %}&page={{ i }}"><small>{{ i }}</small></a></li>
+                                {% endif %}
+                        {% endfor %}
+                        {% if pagination.has_next %}<li><a href="{{ url_for('SearchPatient') }}?name={% if request.args.get('name')!=''  and request.args.get('name')!=None %}{{ request.args.get('name') }}{% endif %}&gender={% if request.args.get('gender')!='' and request.args.get('gender')!=None %}{{ request.args.get('gender') }}{% endif %}&age={% if request.args.get('age')!='' and request.args.get('age')!=None %}{{ request.args.get('age') }}{% endif %}&diagnosis={% if request.args.get('diagnosis')!='' and request.args.get('diagnosis')!=None %}{{ request.args.get('diagnosis') }}{% endif %}&page={{ pagination.next_num }}">&#8250;<small>下一页</small></a></li>{% endif %}
+                    </ul>
+                </div>
+                <!-- end users table -->
+            </div>
+        </div>
+    </div>
+	<!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src={{url_for('static', filename ='js/bootstrap.min.js')}}></script>
+    <script src={{url_for('static', filename ='js/bootstrap-paginator.js')}}></script>
+    <script src={{url_for('static', filename ='js/theme.js')}}></script>
+    <script src={{url_for('static', filename ='js/layui.js')}}></script>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

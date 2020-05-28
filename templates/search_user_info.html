@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ userToCheckInfo.name}}的个人信息 - 医院管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-responsive.css') }}"rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/bootstrap/bootstrap-overrides.css') }}" type="text/css" rel="stylesheet" />
+    <!-- global styles -->
+    <link href="{{ url_for('static',filename='css/layout.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/elements.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static',filename='css/icons.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/lib/font-awesome.css') }}" type="text/css" rel="stylesheet" />
+    <!-- this page specific styles -->
+    <link href="{{ url_for('static',filename='css/compiled/personal-info.css') }}" type="text/css" rel="stylesheet" />
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="/"><img src={{url_for('static', filename ='img/logo.png')}} width=55%/></a>
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <ul class="nav pull-right">
+                <li class="settings hidden-phone">
+                    <a role="button">
+                        当前时间 {{time}}
+                    </a>
+                </li>
+               <li class="settings hidden-phone">
+                    <a role="button" href="/exit">
+                        退出系统
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-collapse collapse pull-right">
+                <ul class="nav">
+                    <li ><a href="/home">个人中心</a></li>
+                    <li><a href="/visualize">数据统计</a></li>
+                    <li><a href="/search/patient">患者信息</a></li>
+                    <li><a href="/search/drug">药品信息</a></li>
+                    {% if isAdmin %}
+                    <li><a href="/search/user">医生信息</a></li>
+                    {% endif %}
+                    <li class="active"><a href="/search/user/info">个人信息</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end navbar -->
+	<!-- main container .wide-content is used for this layout without sidebar :)  -->
+    <div class="content wide-content">
+        <div class="container-fluid">
+            <div class="settings-wrapper" id="pad-wrapper">
+                <!-- avatar column -->
+                <div class="span3 avatar-box">
+                    <div class="personal-image">
+                        <img src={{url_for('static', filename ='img/personal-info.png')}} class="avatar img-circle" />
+                    </div>
+                </div>
+                <!-- edit form column -->
+                <div class="span7 personal-info">
+                    <div class="alert alert-info">
+                        <i class="icon-lightbulb"></i>
+                        本页面展示了您的个人账户信息，如果您发现您的个人信息有误或需要修改，
+                        可在 <strong>个人信息修改</strong> 模块进行维护，如果您不慎
+                        丢失其中的部分信息，请 <strong>联系管理员</strong> 寻求解决。
+                    </div>
+                    <h5 class="personal-title">{{ userToCheckInfo.name}} 的个人信息</h5>
+
+                    <form />
+                        <div class="field-box">
+                            <label>姓名:</label>
+                            {{ userToCheckInfo.name }}
+                        </div>
+                        <div class="field-box">
+                            <label>医生编号：</label>
+                            {{ userToCheckInfo.id }}
+                        </div>
+                        <div class="field-box">
+                            <label>用户名：</label>
+                            {{ userToCheckInfo.username }}
+                        </div>
+                        <div class="field-box">
+                            <label>是否为管理员账户:</label>
+                            {% if isAdmin %}
+                                是
+                            {% else %}
+                                否
+                            {% endif %}
+                        </div>
+                        <div class="field-box">
+                            <label>职称:</label>
+                            {% if userToCheckInfo.jobTitle == 1 %}
+                                主任医师
+                            {% elif userToCheckInfo.jobTitle == 2 %}
+                                副主任医师
+                           {% elif userToCheckInfo.jobTitle == 3 %}
+                                主治医师
+                            {% else %}
+                                住院医师
+                            {% endif %}
+                        </div>
+                        <div class="field-box">
+                            <label>性别:</label>
+                            {{ userToCheckInfo.sex }}
+                        </div>
+                        <div class="field-box">
+                            <label>生日:</label>
+                            {{ userToCheckInfo.birthday }}
+                        </div>
+                        <div class="field-box">
+                            <label>电话号码:</label>
+                            {{ userToCheckInfo.telephoneNum }}
+                        </div>
+                        <div class="field-box">
+                            <label>微信:</label>
+                            {{ userToCheckInfo.wechat }}
+                        </div>
+                        <div class="field-box">
+                            <label>邮箱:</label>
+                            {{ userToCheckInfo.mail }}
+                        </div>
+                        <div class="field-box">
+                            <label>QQ:</label>
+                            {{ userToCheckInfo.qq }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+	<!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/theme.js"></script>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>
