@@ -84,16 +84,14 @@ Python、MySQL、jQuery、Bootstrap、Flask、HTML、JavaScript、CSS等
 -app.py #主程序
 -mimic.py #class定义
 -config.py #存放数据库配置信息
+-hospital.rar #存放数据库
 ```
 
 ## How To Run
 
 * Download / Git Clone This Project
 
-* Import the MySQL file `hospital.sql`
-
-  > ***Note:***
-  > *You can get the `hospital.sql` from https://pan.baidu.com/s/1mmk0TMSWtJTepfQ0u8CTew by using the password `thzg`*
+* Import the MySQL file `hospital.sql`(You can get it in `hospital.rar`)
 
 * Configure
 
@@ -111,8 +109,7 @@ Python、MySQL、jQuery、Bootstrap、Flask、HTML、JavaScript、CSS等
 
   > Initial account information
   >
-  > * Administrator account:
-  >   User name: admin, password: admin
+  > * Administrator account: User name: admin, password: admin
   >
   > *Note:You can use these two accounts to log in to the system. After logging in, you can modify the permissions of other doctor accounts*
 
